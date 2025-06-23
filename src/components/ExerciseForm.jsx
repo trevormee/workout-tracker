@@ -1,67 +1,72 @@
+import { useState } from 'react';
 
-import { useState } from "react";
+function ExerciseForm({ onAddExercise }) {
+  const [exercise, setExercise] = useState({
+    name: '',
+    sets: '',
+    weight: '',
+    reps: '',
+  });
 
-function ExerciseForm({onAddExercise}) {
-    const [name, setName] = useState('');
-    const [weight, setWeight] = useState('');
-    const [sets, setSets] = useState('');
-    const [reps, setReps] = useState('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setExercise(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-        if (!name || !weight || !reps || !sets) {
-            alert('Please fill in all fields.');
-            return;
-        }
+    if (!exercise.name || !exercise.sets || !exercise.weight || !exercise.reps) {
+      alert('Please fill in all fields.');
+      return;
+    }
 
-        const newExercise = {
-            name,
-            weight: parseInt(weight),
-            sets: parseInt(sets),
-            reps: parseInt(reps),
-        }
+    onAddExercise({
+      name: exercise.name,
+      sets: parseInt(exercise.sets),
+      weight: parseFloat(exercise.weight),
+      reps: parseInt(exercise.reps, 10),
+    });
 
-        onAddExercise(newExercise);
+    setExercise({ name: '', sets: '', weight: '', reps: '' });
+  };
 
-        // Reset the form
-        setName('');
-        setWeight('');
-        setSets('');
-        setReps('');
-    }; 
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <input 
-                type="text" 
-                placeholder="Exercise Name" 
-                value={name} 
-                onChange={(e) => setName(e.target.value)}
-            />
-             <input 
-                type="number" 
-                placeholder="Sets" 
-                value={sets} 
-                onChange={(e) => setSets(e.target.value)}
-            />
-            <input 
-                type="number" 
-                placeholder="Weight" 
-                value={weight} 
-                onChange={(e) => setWeight(e.target.value)}
-            />
-            <input 
-                type="number" 
-                placeholder="Reps" 
-                value={reps} 
-                onChange={(e) => setReps(e.target.value)}
-            />
-            <button type="submit">Add Exercise</button>
-        </form>
-        
-    );
-
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="name"
+        type="text"
+        placeholder="Exercise Name"
+        value={exercise.name}
+        onChange={handleChange}
+      />
+      <input
+        name="sets"
+        type="number"
+        placeholder="Sets"
+        value={exercise.sets}
+        onChange={handleChange}
+      />
+      <input
+        name="weight"
+        type="number"
+        placeholder="Weight (lbs)"
+        value={exercise.weight}
+        onChange={handleChange}
+      />
+      <input
+        name="reps"
+        type="number"
+        placeholder="Reps"
+        value={exercise.reps}
+        onChange={handleChange}
+      />
+      <button type="submit">Add Exercise</button>
+    </form>
+  );
 }
 
 export default ExerciseForm;
