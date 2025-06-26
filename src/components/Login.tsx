@@ -14,8 +14,10 @@ function Login() {
 
     return (
         <form onSubmit={(event) => send({ type: "submit", event})}>
+            <h2>Welcome, please login</h2>
             <input 
                 type="text"
+                placeholder="Enter username..."
                 value={snapshot.context.username}
                 onChange={(e) => 
                     send({ type: "update-username", username: e.target.value})

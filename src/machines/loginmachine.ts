@@ -8,10 +8,7 @@ export interface Context {
 export const initialContext: Context = { username: "" };
 
 export const postRequest = async (context: Context) => {
-//   new Promise<Context>((resolve) =>
-//     setTimeout(() => {
-//       resolve(context);
-//     }, 1000)
+
     const res = await fetch(`http://localhost:3001/users?username=${context.username}`);
     const users = await res.json();
     if(users.length === 0){
